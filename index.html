@@ -8,24 +8,36 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Canvas Confetti -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
-    <!-- Google Fonts: DynaPuff -->
-    <link href="https://fonts.googleapis.com/css2?family=DynaPuff:wght@400..700&display=swap" rel="stylesheet">
+    <!-- Google Fonts: Sniglet and Iansui -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Iansui&family=Sniglet:wght@400;800&display=swap" rel="stylesheet">
     <style>
-        /* Import Iansui font for Chinese characters */
-        @font-face {
-            font-family: 'Iansui';
-            src: url('https://cdn.jsdelivr.net/gh/ButTaiwan/iansui@master/webfont/Iansui-Regular.woff2') format('woff2');
-            font-weight: normal;
+        /* Explicit font classes based on provided specs */
+        .iansui-regular {
+            font-family: "Iansui", cursive;
+            font-weight: 400;
             font-style: normal;
-            font-display: swap;
         }
 
-        /* * By listing DynaPuff first, English characters will use it. 
-         * Since DynaPuff doesn't have Chinese characters, the browser 
+        .sniglet-regular {
+            font-family: "Sniglet", system-ui;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        .sniglet-extrabold {
+            font-family: "Sniglet", system-ui;
+            font-weight: 800;
+            font-style: normal;
+        }
+
+        /* * By listing Sniglet first, English characters will use it. 
+         * Since Sniglet doesn't have Chinese characters, the browser 
          * will automatically fall back to Iansui for the Chinese text.
          */
         .font-serif, .font-sans, body {
-            font-family: 'DynaPuff', 'Iansui', sans-serif !important;
+            font-family: 'Sniglet', 'Iansui', sans-serif !important;
         }
 
         /* Soft, elegant champagne & cream watercolor style gradient */
