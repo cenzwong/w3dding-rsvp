@@ -55,7 +55,7 @@
             background-image: url('https://github.com/cenzwong/w3dding-rsvp/blob/main/illustrated_map.png?raw=true');
             background-size: cover;
             background-position: center;
-            opacity: 0.12; /* Subtle transparency */
+            opacity: 0.05; /* Subtle transparency */
             z-index: 0;
             pointer-events: none; /* Prevents blocking clicks */
         }
@@ -70,6 +70,11 @@
         .animate-ring {
             animation: ring-pause 2.5s infinite ease-in-out;
             transform-origin: center;
+        }
+
+        /* Custom Diamond Ring Emoji Cursor */
+        body, a, button, label {
+            cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32'><text y='24' font-size='24'>💍</text></svg>") 16 16, auto !important;
         }
     </style>
 </head>
