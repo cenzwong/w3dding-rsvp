@@ -198,6 +198,25 @@
                     </button>
                 </div>
             </div>
+
+            <!-- 4. After Party Status Buttons -->
+            <div>
+                <label class="block text-sm font-bold text-stone-600 uppercase tracking-wider mb-1.5">
+                    慶祝飯局 (2:15pm) <span class="text-xs font-normal text-stone-500">/ After Party</span>
+                </label>
+                <div class="grid grid-cols-2 gap-3">
+                    <button type="button" id="btn-ap-accept" disabled onclick="setAfterParty(true)" 
+                            class="py-3 px-3 text-sm font-semibold rounded-xl border text-center transition-all bg-white border-stone-200 text-stone-500 hover:bg-stone-50 disabled:opacity-50 disabled:cursor-not-allowed">
+                        <span class="block text-base mb-0.5">參加</span>
+                        <span class="block text-[10px] sm:text-xs font-medium opacity-80">Yes</span>
+                    </button>
+                    <button type="button" id="btn-ap-decline" disabled onclick="setAfterParty(false)" 
+                            class="py-3 px-3 text-sm font-semibold rounded-xl border text-center transition-all bg-white border-stone-200 text-stone-500 hover:bg-stone-50 disabled:opacity-50 disabled:cursor-not-allowed">
+                        <span class="block text-base mb-0.5">不參加</span>
+                        <span class="block text-[10px] sm:text-xs font-medium opacity-80">No</span>
+                    </button>
+                </div>
+            </div>
         </section>
 
         <!-- Side-by-Side Left & Right WhatsApp Hyperlink Buttons (Bilingual) -->
@@ -255,6 +274,7 @@
 
         // Local state - set to null initially so no button is highlighted
         let guestAttending = null;
+        let afterPartyAttending = null;
 
         // Validation logic to enable/disable buttons
         function checkFormValidity() {
@@ -263,14 +283,20 @@
             
             const acceptBtn = document.getElementById('btn-accept');
             const declineBtn = document.getElementById('btn-decline');
+            const apAcceptBtn = document.getElementById('btn-ap-accept');
+            const apDeclineBtn = document.getElementById('btn-ap-decline');
 
             // Must have name and valid guest count (>= 1) to enable buttons
             if (guestName !== "" && guestCount !== "" && parseInt(guestCount) > 0) {
                 acceptBtn.disabled = false;
                 declineBtn.disabled = false;
+                apAcceptBtn.disabled = false;
+                apDeclineBtn.disabled = false;
             } else {
                 acceptBtn.disabled = true;
                 declineBtn.disabled = true;
+                apAcceptBtn.disabled = true;
+                apDeclineBtn.disabled = true;
             }
         }
 
@@ -304,11 +330,37 @@
             updateWeddingMessage();
 
             // 3. Send silent POST Request to Google Apps Script
+            sendDataToSheet();
+        }
+
+        function setAfterParty(isAttending) {
+            afterPartyAttending = isAttending;
+            
+            const acceptBtn = document.getElementById('btn-ap-accept');
+            const declineBtn = document.getElementById('btn-ap-decline');
+
+            if (isAttending) {
+                acceptBtn.className = "py-3 px-3 text-sm font-semibold rounded-xl border text-center transition-all bg-amber-50 border-amber-300 text-amber-800 disabled:opacity-50 disabled:cursor-not-allowed";
+                declineBtn.className = "py-3 px-3 text-sm font-semibold rounded-xl border text-center transition-all bg-white border-stone-200 text-stone-500 hover:bg-stone-50 disabled:opacity-50 disabled:cursor-not-allowed";
+            } else {
+                declineBtn.className = "py-3 px-3 text-sm font-semibold rounded-xl border text-center transition-all bg-amber-50 border-amber-300 text-amber-800 disabled:opacity-50 disabled:cursor-not-allowed";
+                acceptBtn.className = "py-3 px-3 text-sm font-semibold rounded-xl border text-center transition-all bg-white border-stone-200 text-stone-500 hover:bg-stone-50 disabled:opacity-50 disabled:cursor-not-allowed";
+            }
+
+            updateWeddingMessage();
+            sendDataToSheet();
+        }
+
+        function sendDataToSheet() {
             const guestName = document.getElementById('guest-name').value.trim() || "";
             const guestCount = document.getElementById('guest-count').value || "1";
 
             const scriptUrl = "https://script.google.com/macros/s/AKfycbx0GTZ63PfTrfOtqZZn_mvuvwK6U_GiR_TKfYA7krDtww7OTHrep2FsbGhKrXIuXiqN2g/exec";
             
+            // Format answers for JSON payload
+            const attendanceStr = guestAttending === null ? "" : (guestAttending ? "yes" : "no");
+            const apStr = afterPartyAttending === null ? "" : (afterPartyAttending ? "yes" : "no");
+
             fetch(scriptUrl, {
                 method: "POST",
                 mode: "no-cors", // Bypasses CORS policy checks completely
@@ -319,8 +371,9 @@
                     "sheet_name": "Sheet1",
                     "record": {
                         "name": guestName,
-                        "attendance": isAttending ? "yes" : "no",
-                        "number": String(guestCount)
+                        "attendance": attendanceStr,
+                        "number": String(guestCount),
+                        "after_party": apStr
                     }
                 })
             }).then(() => {
@@ -338,20 +391,32 @@
             const groomAnchor = document.getElementById('whatsapp-groom-btn');
 
             let message = "";
+            let apMsgZh = "";
+            let apMsgEn = "";
+
+            if (guestAttending === true && afterPartyAttending !== null) {
+                if (afterPartyAttending) {
+                    apMsgZh = "我哋亦會出席 2:15pm 嘅慶祝飯局！";
+                    apMsgEn = "We will also join the 2:15pm after-party! ";
+                } else {
+                    apMsgZh = "不過我哋就唔參與 2:15pm 嘅慶祝飯局喇。";
+                    apMsgEn = "However, we won't be able to make the 2:15pm after-party. ";
+                }
+            }
             
             if (guestAttending === null) {
                 // Generic placeholder message before an option is selected
                 message = `你好 Issac & Cenz！我想回覆您哋嘅婚禮邀請！\n\nHi Issac & Cenz! I'd love to RSVP to your wedding!`;
             } else if (guestName) {
                 if (guestAttending) {
-                    message = `你好！我是 ${guestName}。我哋一共 ${guestCount} 人好高興能夠出席您哋喺2026年6月29日舉辦嘅婚禮！🎉\n\nHi! This is ${guestName}. We joyfully accept your wedding invitation for June 29, 2026! There will be ${guestCount} of us attending. 🎉`;
+                    message = `你好！我是 ${guestName}。我哋一共 ${guestCount} 人好高興能夠出席您哋喺2026年6月29日舉辦嘅婚禮！${apMsgZh}🎉\n\nHi! This is ${guestName}. We joyfully accept your wedding invitation for June 29, 2026! There will be ${guestCount} of us attending. ${apMsgEn}🎉`;
                 } else {
                     message = `你好！我是 ${guestName}。好遺憾我哋未能出席您哋喺2026年6月29日舉辦嘅婚禮，但衷心祝福您哋新婚快樂、幸福美滿！❤️\n\nHi! This is ${guestName}. We regretfully decline your wedding invitation for June 29, 2026, but we wish you both the very best! ❤️`;
                 }
             } else {
                 // Fallback message if no name is entered but attendance is selected
                 if (guestAttending) {
-                    message = `你好 Issac & Cenz！我想回覆您哋嘅婚禮邀請，我哋一共 ${guestCount} 人會出席啊！🎉\n\nHi Issac & Cenz! I'd love to RSVP to your wedding. I'm excited to accept your invitation for ${guestCount} guest(s)! 🎉`;
+                    message = `你好 Issac & Cenz！我想回覆您哋嘅婚禮邀請，我哋一共 ${guestCount} 人會出席啊！${apMsgZh}🎉\n\nHi Issac & Cenz! I'd love to RSVP to your wedding. I'm excited to accept your invitation for ${guestCount} guest(s)! ${apMsgEn}🎉`;
                 } else {
                     message = `你好 Issac & Cenz！同您哋講聲，好遺憾我哋未能出席您哋喺6月29日舉辦嘅婚禮。祝您哋新婚快樂、幸福美滿！❤️\n\nHi Issac & Cenz! I'm reaching out to let you know that I regretfully won't be able to attend your wedding on June 29. Best wishes! ❤️`;
                 }
