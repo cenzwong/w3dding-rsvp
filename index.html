@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Issac & Cenz Wedding RSVP</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: DynaPuff -->
+    <link href="https://fonts.googleapis.com/css2?family=DynaPuff:wght@400..700&display=swap" rel="stylesheet">
+    <style>
+        /* Import Iansui font for Chinese characters */
+        @font-face {
+            font-family: 'Iansui';
+            src: url('https://cdn.jsdelivr.net/gh/ButTaiwan/iansui@master/webfont/Iansui-Regular.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        /* * By listing DynaPuff first, English characters will use it. 
+         * Since DynaPuff doesn't have Chinese characters, the browser 
+         * will automatically fall back to Iansui for the Chinese text.
+         */
+        .font-serif, .font-sans, body {
+            font-family: 'DynaPuff', 'Iansui', sans-serif !important;
+        }
+
+        /* Soft, elegant champagne & cream watercolor style gradient */
+        .bg-shimmer {
+            background: linear-gradient(135deg, #fbf9f4 0%, #f3ede2 100%);
+        }
+    </style>
+</head>
+<body class="bg-shimmer font-sans text-stone-850 min-h-screen flex flex-col justify-between p-4 sm:p-6">
+
+    <!-- Decorative Top Luxury Bar -->
+    <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-amber-100 via-amber-300 to-amber-100"></div>
+
+    <main class="max-w-md w-full mx-auto my-auto bg-white/95 backdrop-blur-md rounded-[32px] p-6 sm:p-8 shadow-[0_24px_60px_rgba(139,115,85,0.08)] border border-amber-100/40 flex flex-col items-center text-center relative overflow-hidden">
+        
+        <!-- Elegant Corner Flourishes (SVG Vector Art) -->
+        <div class="absolute top-0 left-0 w-16 h-16 opacity-15 text-amber-800 pointer-events-none">
+            <svg viewBox="0 0 100 100" class="w-full h-full fill-current">
+                <path d="M0,0 C30,0 50,20 50,50 C20,50 0,30 0,0" />
+            </svg>
+        </div>
+        <div class="absolute top-0 right-0 w-16 h-16 opacity-15 text-amber-800 pointer-events-none rotate-90">
+            <svg viewBox="0 0 100 100" class="w-full h-full fill-current">
+                <path d="M0,0 C30,0 50,20 50,50 C20,50 0,30 0,0" />
+            </svg>
+        </div>
+
+        <!-- Wedding Header & Photo -->
+        <header class="w-full space-y-4 mb-5 z-10">
+            <!-- Arched Portrait Frame featuring the couple -->
+            <div class="relative inline-block w-48 h-64 mx-auto">
+                <div class="absolute inset-0 bg-amber-100 rounded-t-full scale-[1.03] blur-sm opacity-40"></div>
+                <img class="relative w-full h-full rounded-t-full rounded-b-lg border-4 border-white shadow-lg object-cover" 
+                     src="Issac&Cenz-PW-320.jpg" 
+                     alt="Issac & Cenz Wedding"
+                     onerror="this.src='https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=400&q=80'">
+            </div>
+            
+            <!-- Bride & Groom Names -->
+            <div class="space-y-1">
+                <h1 class="font-serif text-3xl sm:text-4xl text-stone-900 tracking-tight italic">Issac & Cenz</h1>
+                <p class="text-[10px] uppercase tracking-[0.25em] font-semibold text-amber-700">我們結婚了！ • Are Getting Married</p>
+            </div>
+
+            <!-- Event Details (Bilingual) -->
+            <div class="py-2.5 px-4 bg-stone-50/90 rounded-2xl border border-stone-100 inline-block text-xs text-stone-600 space-y-0.5">
+                <p class="font-semibold text-stone-850">2026年6月29日 (星期一)</p>
+                <p class="text-[11px] font-medium text-stone-600">Monday, June 29, 2026</p>
+                <div class="w-8 h-[1px] bg-stone-200 mx-auto my-1"></div>
+                <p class="text-[10px] text-stone-500">敬請回覆 • Save the Date • RSVP Below</p>
+            </div>
+            
+            <p class="text-xs text-stone-600 max-w-xs mx-auto leading-relaxed">
+                衷心期待與您分享這份喜悅。<br class="hidden sm:inline">請於下方選擇出席狀況，並透過 WhatsApp 聯絡我們！
+                <span class="block text-[11px] italic text-stone-400 mt-1">
+                    "We can't wait to share our journey with you. Please let us know if you can attend by messaging us on WhatsApp!"
+                </span>
+            </p>
+        </header>
+
+        <!-- Interactive Guest Helper Form (Bilingual labels) -->
+        <section class="w-full bg-stone-50/60 border border-amber-100/40 rounded-2xl p-4 mb-5 text-left z-10 space-y-3.5">
+            <h3 class="text-[10px] font-bold text-stone-600 uppercase tracking-widest text-center">
+                回覆訊息助手 • RSVP Message Builder
+            </h3>
+            
+            <div>
+                <label for="guest-name" class="block text-[10px] font-bold text-stone-500 uppercase tracking-wider mb-1">
+                    您的姓名 <span class="text-[8px] font-normal text-stone-400">/ Your Full Name(s)</span>
+                </label>
+                <input type="text" id="guest-name" placeholder="例如：Alexis 與家人 / e.g. Alexis & family" oninput="updateWeddingMessage()" 
+                       class="w-full bg-white border border-stone-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-amber-500 focus:border-amber-500 transition-all text-stone-850">
+            </div>
+
+            <div>
+                <label class="block text-[10px] font-bold text-stone-500 uppercase tracking-wider mb-1">
+                    出席狀況 <span class="text-[8px] font-normal text-stone-400">/ Attendance Status</span>
+                </label>
+                <div class="grid grid-cols-2 gap-2">
+                    <button type="button" id="btn-accept" onclick="setAttendance(true)" 
+                            class="py-2.5 px-3 text-xs font-semibold rounded-xl border text-center transition-all bg-amber-50 border-amber-300 text-amber-800">
+                        <span class="block">歡雅出席</span>
+                        <span class="block text-[9px] font-medium opacity-80">Joyfully Accept</span>
+                    </button>
+                    <button type="button" id="btn-decline" onclick="setAttendance(false)" 
+                            class="py-2.5 px-3 text-xs font-semibold rounded-xl border text-center transition-all bg-white border-stone-200 text-stone-500 hover:bg-stone-50">
+                        <span class="block">未能出席</span>
+                        <span class="block text-[9px] font-medium opacity-80">Regretfully Decline</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Side-by-Side Left & Right WhatsApp Hyperlink Buttons (Bilingual) -->
+        <section class="w-full z-10">
+            <h3 class="text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-3">
+                發送回覆訊息至 • Send RSVP Message To
+            </h3>
+            
+            <div class="grid grid-cols-2 gap-3">
+                
+                <!-- Left Button: WhatsApp Bride (Issac) -->
+                <a id="whatsapp-bride-btn" 
+                   href="https://wa.me/85265472714" 
+                   target="_blank" 
+                   rel="noopener noreferrer" 
+                   class="group flex flex-col items-center justify-center p-3 bg-[#25D366] hover:bg-[#20ba59] active:scale-[0.98] text-white rounded-2xl shadow-md transition-all duration-150">
+                    <div class="flex items-center gap-1.5 mb-0.5">
+                        <!-- WhatsApp SVG Icon -->
+                        <svg class="w-4 h-4 fill-current text-white" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.455L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.963C16.528 2.025 14.072.996 11.52.996 6.085.996 1.662 5.365 1.659 10.793c-.001 1.743.472 3.447 1.369 4.978l-.999 3.648 3.74-.977zM17.48 15.6c-.322-.16-.1.88-.236 1.05-.13.16-.36.2-.55.12-1.25-.51-2.43-1.39-3.23-2.58-.45-.66-.67-1.35-.49-1.93.07-.22.25-.43.39-.56.12-.13.23-.25.29-.36.08-.15.08-.31-.01-.48-.09-.17-.79-1.92-.93-2.28-.15-.37-.32-.37-.47-.37h-.4c-.16 0-.42.06-.65.31-.22.25-.87.85-.87 2.07s.89 2.4 1.01 2.56c.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.14-1.18-.07-.1-.26-.17-.58-.33z"/>
+                        </svg>
+                        <span class="text-[13px] font-bold tracking-wide">新娘 Issac</span>
+                    </div>
+                    <span class="text-[9px] opacity-90 text-center font-medium block">Bride Issac • WhatsApp</span>
+                </a>
+
+                <!-- Right Button: WhatsApp Groom (Cenz) -->
+                <a id="whatsapp-groom-btn" 
+                   href="https://wa.me/85261585094" 
+                   target="_blank" 
+                   rel="noopener noreferrer" 
+                   class="group flex flex-col items-center justify-center p-3 bg-[#25D366] hover:bg-[#20ba59] active:scale-[0.98] text-white rounded-2xl shadow-md transition-all duration-150">
+                    <div class="flex items-center gap-1.5 mb-0.5">
+                        <!-- WhatsApp SVG Icon -->
+                        <svg class="w-4 h-4 fill-current text-white" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.455L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.963C16.528 2.025 14.072.996 11.52.996 6.085.996 1.662 5.365 1.659 10.793c-.001 1.743.472 3.447 1.369 4.978l-.999 3.648 3.74-.977zM17.48 15.6c-.322-.16-.1.88-.236 1.05-.13.16-.36.2-.55.12-1.25-.51-2.43-1.39-3.23-2.58-.45-.66-.67-1.35-.49-1.93.07-.22.25-.43.39-.56.12-.13.23-.25.29-.36.08-.15.08-.31-.01-.48-.09-.17-.79-1.92-.93-2.28-.15-.37-.32-.37-.47-.37h-.4c-.16 0-.42.06-.65.31-.22.25-.87.85-.87 2.07s.89 2.4 1.01 2.56c.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.14-1.18-.07-.1-.26-.17-.58-.33z"/>
+                        </svg>
+                        <span class="text-[13px] font-bold tracking-wide">新郎 Cenz</span>
+                    </div>
+                    <span class="text-[9px] opacity-90 text-center font-medium block">Groom Cenz • WhatsApp</span>
+                </a>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Clean, Delicate Footer Details -->
+    <footer class="text-center py-4 space-y-1.5 z-10">
+        <p class="text-[9px] font-bold tracking-[0.22em] text-stone-400 uppercase">
+            Issac & Cenz • 2026年6月29日 • June 29, 2026
+        </p>
+    </footer>
+
+    <script>
+        // CONFIGURATION: Real WhatsApp numbers mapped from your prompt info (Hong Kong 852 Country Code)
+        const bridePhone = "85265472714"; // Bride: Issac
+        const groomPhone = "85261585094"; // Groom: Cenz
+
+        // Local state
+        let guestAttending = true;
+
+        function setAttendance(isAttending) {
+            guestAttending = isAttending;
+            
+            const acceptBtn = document.getElementById('btn-accept');
+            const declineBtn = document.getElementById('btn-decline');
+
+            if (isAttending) {
+                // Style accept button as active
+                acceptBtn.className = "py-2.5 px-3 text-xs font-semibold rounded-xl border text-center transition-all bg-amber-50 border-amber-300 text-amber-800";
+                declineBtn.className = "py-2.5 px-3 text-xs font-semibold rounded-xl border text-center transition-all bg-white border-stone-200 text-stone-500 hover:bg-stone-50";
+            } else {
+                // Style decline button as active
+                declineBtn.className = "py-2.5 px-3 text-xs font-semibold rounded-xl border text-center transition-all bg-amber-50 border-amber-300 text-amber-800";
+                acceptBtn.className = "py-2.5 px-3 text-xs font-semibold rounded-xl border text-center transition-all bg-white border-stone-200 text-stone-500 hover:bg-stone-50";
+            }
+
+            updateWeddingMessage();
+        }
+
+        // Compute and formulate the final WhatsApp URLs on keypress changes
+        function updateWeddingMessage() {
+            const guestName = document.getElementById('guest-name').value.trim();
+            const brideAnchor = document.getElementById('whatsapp-bride-btn');
+            const groomAnchor = document.getElementById('whatsapp-groom-btn');
+
+            let message = "";
+            
+            if (guestName) {
+                if (guestAttending) {
+                    message = `你好！我是 ${guestName}。我哋好高興能夠出席您哋喺2026年6月29日舉辦嘅婚禮！🎉\n\nHi! This is ${guestName}. We joyfully accept your wedding invitation for June 29, 2026, and will be attending! 🎉`;
+                } else {
+                    message = `你好！我是 ${guestName}。好遺憾我哋未能出席您哋喺2026年6月29日舉辦嘅婚禮，但衷心祝福您哋新婚快樂、幸福美滿！❤️\n\nHi! This is ${guestName}. We regretfully decline your wedding invitation for June 29, 2026, but we wish you both the very best! ❤️`;
+                }
+            } else {
+                // Fallback message if no name is entered
+                if (guestAttending) {
+                    message = `你好 Issac & Cenz！我想回覆您哋嘅婚禮邀請，我會出席啊！🎉\n\nHi Issac & Cenz! I'd love to RSVP to your wedding. I'm excited to accept your invitation! 🎉`;
+                } else {
+                    message = `你好 Issac & Cenz！同您哋講聲，好遺憾我哋未能出席您哋喺6月29日舉辦嘅婚禮。祝您哋新婚快樂、幸福美滿！❤️\n\nHi Issac & Cenz! I'm reaching out to let you know that I regretfully won't be able to attend your wedding on June 29. Best wishes! ❤️`;
+                }
+            }
+
+            // Encode string for secure safe URL execution
+            const encodedMessage = encodeURIComponent(message);
+
+            // Update anchor tags with updated message templates
+            brideAnchor.href = `https://wa.me/${bridePhone}?text=${encodedMessage}`;
+            groomAnchor.href = `https://wa.me/${groomPhone}?text=${encodedMessage}`;
+        }
+
+        // Initial launch setup to verify links are properly mapped on first boot
+        window.onload = function() {
+            updateWeddingMessage();
+        };
+    </script>
+</body>
+</html>
