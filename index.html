@@ -244,8 +244,9 @@
             
             fetch(scriptUrl, {
                 method: "POST",
+                mode: "no-cors", // Bypasses CORS policy checks completely
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "text/plain;charset=utf-8" // Transforms to a "Simple Request" to bypass preflight
                 },
                 body: JSON.stringify({
                     "sheet_name": "Sheet1",
@@ -255,9 +256,10 @@
                         "number": String(guestCount)
                     }
                 })
-            }).catch(err => {
-                // Ignore silent CORS errors if Google Script redirect prevents parsing
+            }).then(() => {
                 console.log("RSVP pinged to sheet."); 
+            }).catch(err => {
+                console.log("Failed to ping sheet:", err);
             });
         }
 
