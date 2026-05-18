@@ -68,15 +68,45 @@
                 <p class="text-[10px] uppercase tracking-[0.25em] font-semibold text-amber-700">我們結婚了！ • Are Getting Married</p>
             </div>
 
-            <!-- Event Details (Bilingual) -->
-            <div class="py-2.5 px-4 bg-stone-50/90 rounded-2xl border border-stone-100 inline-block text-xs text-stone-600 space-y-0.5">
-                <p class="font-semibold text-stone-850">2026年6月29日 (星期一)</p>
-                <p class="text-[11px] font-medium text-stone-600">Monday, June 29, 2026</p>
-                <div class="w-8 h-[1px] bg-stone-200 mx-auto my-1"></div>
-                <p class="text-[10px] text-stone-500">敬請回覆 • Save the Date • RSVP Below</p>
+            <!-- Event Details & Location (Bilingual) -->
+            <div class="py-3 px-4 bg-stone-50/90 rounded-2xl border border-stone-100 w-full text-xs text-stone-600 space-y-2.5">
+                <!-- Date -->
+                <div class="space-y-0.5">
+                    <p class="font-semibold text-stone-850">2026年6月29日 (星期一)</p>
+                    <p class="text-[11px] font-medium text-stone-600">Monday, June 29, 2026</p>
+                </div>
+                
+                <div class="w-8 h-[1px] bg-stone-200 mx-auto"></div>
+                
+                <!-- Location -->
+                <div class="space-y-0.5">
+                    <p class="font-semibold text-stone-850 text-[11px]">War Memorial Building, Harrow School</p>
+                    <p class="text-[10px] text-stone-500">Harrow HA1 3HL</p>
+                </div>
+
+                <!-- Action Buttons: Map & Calendar -->
+                <div class="grid grid-cols-2 gap-2 pt-1 max-w-[280px] mx-auto">
+                    <a href="https://maps.app.goo.gl/jc8KRyaF3cfCTYHb7" target="_blank" rel="noopener noreferrer" 
+                       class="flex items-center justify-center gap-1.5 py-2 px-1 bg-white border border-stone-200 rounded-xl text-stone-700 hover:bg-stone-50 transition-all shadow-sm active:scale-95">
+                        <span class="text-sm">📍</span>
+                        <div class="text-left">
+                            <span class="block text-[10px] font-bold leading-none mb-0.5">查看地圖</span>
+                            <span class="block text-[8px] opacity-80 leading-none">View Map</span>
+                        </div>
+                    </a>
+                    
+                    <button onclick="downloadICS()" type="button" 
+                            class="flex items-center justify-center gap-1.5 py-2 px-1 bg-white border border-stone-200 rounded-xl text-stone-700 hover:bg-stone-50 transition-all shadow-sm active:scale-95">
+                        <span class="text-sm">📅</span>
+                        <div class="text-left">
+                            <span class="block text-[10px] font-bold leading-none mb-0.5">加入日曆</span>
+                            <span class="block text-[8px] opacity-80 leading-none">Add Event</span>
+                        </div>
+                    </button>
+                </div>
             </div>
             
-            <p class="text-xs text-stone-600 max-w-xs mx-auto leading-relaxed">
+            <p class="text-xs text-stone-600 max-w-xs mx-auto leading-relaxed pt-2">
                 衷心期待與您分享這份喜悅。<br class="hidden sm:inline">請於下方選擇出席狀況，並透過 WhatsApp 聯絡我們！
                 <span class="block text-[11px] italic text-stone-400 mt-1">
                     "We can't wait to share our journey with you. Please let us know if you can attend by messaging us on WhatsApp!"
@@ -225,6 +255,35 @@
             // Update anchor tags with updated message templates
             brideAnchor.href = `https://wa.me/${bridePhone}?text=${encodedMessage}`;
             groomAnchor.href = `https://wa.me/${groomPhone}?text=${encodedMessage}`;
+        }
+
+        // Generate and download an .ics file for calendar integration
+        function downloadICS() {
+            const icsContent = `BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Issac and Cenz Wedding//EN
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+SUMMARY:Issac & Cenz Wedding
+DTSTART;VALUE=DATE:20260629
+DTEND;VALUE=DATE:20260630
+LOCATION:War Memorial Building\\, Harrow School\\, Harrow HA1 3HL
+DESCRIPTION:Join us to celebrate the wedding of Issac and Cenz!\\n\\nMap: https://maps.app.goo.gl/jc8KRyaF3cfCTYHb7
+STATUS:CONFIRMED
+SEQUENCE:0
+END:VEVENT
+END:VCALENDAR`;
+
+            // Convert line breaks to CRLF as required by ICS spec
+            const formattedIcs = icsContent.replace(/\n/g, "\r\n");
+            
+            const blob = new Blob([formattedIcs], { type: 'text/calendar;charset=utf-8' });
+            const link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.setAttribute('download', 'Issac_Cenz_Wedding.ics');
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         }
 
         // Initial launch setup to verify links are properly mapped on first boot
