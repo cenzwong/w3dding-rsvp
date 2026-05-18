@@ -6,6 +6,8 @@
     <title>Issac & Cenz Wedding RSVP</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
     <!-- Google Fonts: DynaPuff -->
     <link href="https://fonts.googleapis.com/css2?family=DynaPuff:wght@400..700&display=swap" rel="stylesheet">
     <style>
@@ -145,7 +147,7 @@
                 </label>
                 <div class="grid grid-cols-2 gap-2">
                     <button type="button" id="btn-accept" onclick="setAttendance(true)" 
-                            class="py-2.5 px-3 text-xs font-semibold rounded-xl border text-center transition-all bg-amber-50 border-amber-300 text-amber-800">
+                            class="py-2.5 px-3 text-xs font-semibold rounded-xl border text-center transition-all bg-white border-stone-200 text-stone-500 hover:bg-stone-50">
                         <span class="block">歡雅出席</span>
                         <span class="block text-[9px] font-medium opacity-80">Joyfully Accept</span>
                     </button>
@@ -215,10 +217,11 @@
         const bridePhone = "85265472714"; // Bride: Issac
         const groomPhone = "85261585094"; // Groom: Cenz
 
-        // Local state
-        let guestAttending = true;
+        // Local state - set to null initially so no button is highlighted
+        let guestAttending = null;
 
         function setAttendance(isAttending) {
+            const wasAttending = guestAttending;
             guestAttending = isAttending;
             
             const acceptBtn = document.getElementById('btn-accept');
@@ -228,6 +231,16 @@
             if (isAttending) {
                 acceptBtn.className = "py-2.5 px-3 text-xs font-semibold rounded-xl border text-center transition-all bg-amber-50 border-amber-300 text-amber-800";
                 declineBtn.className = "py-2.5 px-3 text-xs font-semibold rounded-xl border text-center transition-all bg-white border-stone-200 text-stone-500 hover:bg-stone-50";
+                
+                // Fire confetti if they just accepted
+                if (wasAttending !== true) {
+                    confetti({
+                        particleCount: 120,
+                        spread: 80,
+                        origin: { y: 0.6 },
+                        colors: ['#fcd34d', '#f59e0b', '#ffffff', '#fbbf24']
+                    });
+                }
             } else {
                 declineBtn.className = "py-2.5 px-3 text-xs font-semibold rounded-xl border text-center transition-all bg-amber-50 border-amber-300 text-amber-800";
                 acceptBtn.className = "py-2.5 px-3 text-xs font-semibold rounded-xl border text-center transition-all bg-white border-stone-200 text-stone-500 hover:bg-stone-50";
@@ -272,14 +285,17 @@
 
             let message = "";
             
-            if (guestName) {
+            if (guestAttending === null) {
+                // Generic placeholder message before an option is selected
+                message = `你好 Issac & Cenz！我想回覆您哋嘅婚禮邀請！\n\nHi Issac & Cenz! I'd love to RSVP to your wedding!`;
+            } else if (guestName) {
                 if (guestAttending) {
                     message = `你好！我是 ${guestName}。我哋一共 ${guestCount} 人好高興能夠出席您哋喺2026年6月29日舉辦嘅婚禮！🎉\n\nHi! This is ${guestName}. We joyfully accept your wedding invitation for June 29, 2026! There will be ${guestCount} of us attending. 🎉`;
                 } else {
                     message = `你好！我是 ${guestName}。好遺憾我哋未能出席您哋喺2026年6月29日舉辦嘅婚禮，但衷心祝福您哋新婚快樂、幸福美滿！❤️\n\nHi! This is ${guestName}. We regretfully decline your wedding invitation for June 29, 2026, but we wish you both the very best! ❤️`;
                 }
             } else {
-                // Fallback message if no name is entered
+                // Fallback message if no name is entered but attendance is selected
                 if (guestAttending) {
                     message = `你好 Issac & Cenz！我想回覆您哋嘅婚禮邀請，我哋一共 ${guestCount} 人會出席啊！🎉\n\nHi Issac & Cenz! I'd love to RSVP to your wedding. I'm excited to accept your invitation for ${guestCount} guest(s)! 🎉`;
                 } else {
