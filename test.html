@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-950 text-slate-100">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Static Site to Google Sheets Demo</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Custom scrollbar styling for the dark-mode console look */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0f172a;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #475569;
+    }
+  </style>
+</head>
+<body class="h-full flex flex-col font-sans selection:bg-emerald-500 selection:text-slate-950">
+
+  <!-- Header Banner -->
+  <header class="border-b border-slate-800 bg-slate-900/50 backdrop-blur-md sticky top-0 z-10 px-6 py-4">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="flex h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+          <h1 class="text-xl font-bold tracking-tight text-white">Google Sheets Gateway</h1>
+        </div>
+        <p class="text-xs text-slate-400 mt-1">Direct static site integration sandbox</p>
+      </div>
+      <div class="flex items-center gap-3 bg-slate-950 border border-slate-800 rounded-lg px-3 py-1.5 text-xs max-w-full overflow-hidden">
+        <span class="text-slate-500 font-mono select-none">ENDPOINT:</span>
+        <span id="endpointDisplay" class="font-mono text-emerald-400 truncate max-w-[250px] md:max-w-[400px]">Loading...</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-1 max-w-6xl w-full mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-12 gap-8 overflow-y-auto">
+    
+    <!-- Left Panel: Interactive Form & Explanations -->
+    <section class="lg:col-span-5 flex flex-col gap-6">
+      <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-6 shadow-xl backdrop-blur-sm">
+        <h2 class="text-lg font-semibold text-white mb-4">Trigger Form</h2>
+        <p class="text-sm text-slate-400 mb-6 leading-relaxed">
+          Fill out the fields below. Pressing the button compiles this data into a JSON payload and transmits it directly to your Apps Script Web App.
+        </p>
+
+        <form id="sheetDemoForm" class="space-y-4">
+          <div>
+            <label for="fullName" class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">Full Name</label>
+            <input 
+              type="text" 
+              id="fullName" 
+              required 
+              value="Jane Doe"
+              class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500 transition-colors"
+              placeholder="e.g. Jane Doe"
+            >
+          </div>
+
+          <div>
+            <label for="userEmail" class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">Email Address</label>
+            <input 
+              type="email" 
+              id="userEmail" 
+              required 
+              value="jane.doe@example.com"
+              class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500 transition-colors"
+              placeholder="jane@example.com"
+            >
+          </div>
+
+          <div>
+            <label for="userMessage" class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">Context Message</label>
+            <textarea 
+              id="userMessage" 
+              rows="3" 
+              class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500 transition-colors resize-none"
+              placeholder="Write something to verify in the sheet..."
+            >Testing direct write pipeline to Google Sheets.</textarea>
+          </div>
+
+          <!-- Configuration Toggle -->
+          <div class="pt-2 border-t border-slate-800/60 mt-4">
+            <div class="flex items-center justify-between text-xs">
+              <span class="text-slate-400 font-semibold uppercase tracking-wider">CORS Optimization Mode</span>
+              <span id="corsBadge" class="bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2 py-0.5 rounded font-mono">text/plain</span>
+            </div>
+            <p class="text-[11px] text-slate-500 mt-1 leading-relaxed">
+              Using <code class="text-slate-300">text/plain</code> bypasses browser pre-flight checks to prevent script failure.
+            </p>
+          </div>
+
+          <!-- Action Button -->
+          <button 
+            type="submit" 
+            id="submitBtn"
+            class="w-full mt-4 bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 text-slate-950 font-bold py-3 px-4 rounded-lg transition-all transform hover:-translate-y-0.5 active:translate-y-0 shadow-lg shadow-emerald-500/10 flex items-center justify-center gap-2"
+          >
+            <svg id="buttonIcon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+            </svg>
+            <span id="buttonText">Send to Google Sheet</span>
+          </button>
+        </form>
+      </div>
+
+      <!-- Network State Indicators -->
+      <div id="statusAlert" class="hidden rounded-xl p-4 border flex items-start gap-3 transition-all duration-300">
+        <div id="alertIconWrapper" class="p-1.5 rounded-lg"></div>
+        <div class="flex-1">
+          <h4 id="alertTitle" class="text-sm font-bold"></h4>
+          <p id="alertDescription" class="text-xs mt-0.5 leading-relaxed"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Right Panel: Under the Hood Inspector -->
+    <section class="lg:col-span-7 flex flex-col gap-6">
+      
+      <!-- Live Payload Preview -->
+      <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-6 shadow-xl flex flex-col h-48">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400">Payload Preview (JSON Object)</h3>
+          <span class="text-[11px] text-slate-500 font-mono">Read-Only</span>
+        </div>
+        <div class="flex-1 bg-slate-950 border border-slate-800/80 rounded-lg p-3 overflow-auto font-mono text-xs text-emerald-400 select-all">
+          <pre id="payloadPreview">{}</pre>
+        </div>
+      </div>
+
+      <!-- Integrated Developer Terminal -->
+      <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-6 shadow-xl flex flex-col flex-1 min-h-[300px]">
+        <div class="flex items-center justify-between mb-3 border-b border-slate-800/60 pb-3">
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-red-500"></span>
+            <span class="w-2 h-2 rounded-full bg-yellow-500"></span>
+            <span class="w-2 h-2 rounded-full bg-green-500"></span>
+            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-300 ml-2 font-mono">Execution Log Console</h3>
+          </div>
+          <button id="clearConsoleBtn" class="text-[10px] text-slate-500 hover:text-slate-300 uppercase font-bold tracking-wider hover:underline transition-all">Clear Logs</button>
+        </div>
+        
+        <!-- Terminal Logs -->
+        <div id="terminalBody" class="flex-1 bg-slate-950 border border-slate-800 rounded-lg p-4 font-mono text-xs text-slate-300 overflow-y-auto space-y-3 selection:bg-slate-800">
+          <div class="text-slate-500">// Terminal initialized. Ready to execute pipeline.</div>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- Script Implementation -->
+  <script>
+    // Configured Apps Script Web App URL provided by User
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzsGvNfoq-29SU9om-msrzNHB6pdcarb_IxeBbHh62-CXaYZbBp8HNzx2QUeIjRdhrY/exec";
+    
+    // DOM Cache
+    const endpointDisplay = document.getElementById('endpointDisplay');
+    const demoForm = document.getElementById('sheetDemoForm');
+    const fullNameInput = document.getElementById('fullName');
+    const userEmailInput = document.getElementById('userEmail');
+    const userMessageInput = document.getElementById('userMessage');
+    const payloadPreview = document.getElementById('payloadPreview');
+    const submitBtn = document.getElementById('submitBtn');
+    const buttonIcon = document.getElementById('buttonIcon');
+    const buttonText = document.getElementById('buttonText');
+    const terminalBody = document.getElementById('terminalBody');
+    const clearConsoleBtn = document.getElementById('clearConsoleBtn');
+    const statusAlert = document.getElementById('statusAlert');
+    const alertIconWrapper = document.getElementById('alertIconWrapper');
+    const alertTitle = document.getElementById('alertTitle');
+    const alertDescription = document.getElementById('alertDescription');
+
+    // Display URL instantly on load
+    endpointDisplay.textContent = APPS_SCRIPT_URL;
+
+    // Helper to log formatting to interactive console
+    function logToTerminal(message, type = 'info') {
+      const logEntry = document.createElement('div');
+      const timestamp = new Date().toLocaleTimeString();
+      let colorClass = 'text-slate-400';
+      let symbol = 'ℹ';
+
+      if (type === 'success') {
+        colorClass = 'text-emerald-400';
+        symbol = '✔';
+      } else if (type === 'error') {
+        colorClass = 'text-rose-400';
+        symbol = '✘';
+      } else if (type === 'request') {
+        colorClass = 'text-blue-400';
+        symbol = '🚀';
+      }
+
+      logEntry.className = `leading-relaxed border-l-2 pl-3 ${type === 'error' ? 'border-rose-500/50 bg-rose-950/10' : type === 'success' ? 'border-emerald-500/50 bg-emerald-950/10' : 'border-slate-800'}`;
+      logEntry.innerHTML = `
+        <span class="text-slate-600 font-mono select-none mr-1.5">[${timestamp}]</span>
+        <span class="${colorClass} font-mono font-bold mr-1">${symbol}</span>
+        <span class="${colorClass}">${message}</span>
+      `;
+      terminalBody.appendChild(logEntry);
+      terminalBody.scrollTop = terminalBody.scrollHeight;
+    }
+
+    // Helper to live construct payload object from inputs
+    function buildPayload() {
+      return {
+        timestamp: new Date().toISOString(),
+        fullName: fullNameInput.value.trim(),
+        userEmail: userEmailInput.value.trim(),
+        message: userMessageInput.value.trim()
+      };
+    }
+
+    // Update the live JSON structure panel
+    function updatePayloadPreview() {
+      const payload = buildPayload();
+      payloadPreview.textContent = JSON.stringify(payload, null, 2);
+    }
+
+    // Event listeners to feed the preview loop
+    fullNameInput.addEventListener('input', updatePayloadPreview);
+    userEmailInput.addEventListener('input', updatePayloadPreview);
+    userMessageInput.addEventListener('input', updatePayloadPreview);
+
+    // Initial Trigger on execution setup
+    updatePayloadPreview();
+
+    // Clear Console Utility
+    clearConsoleBtn.addEventListener('click', () => {
+      terminalBody.innerHTML = '<div class="text-slate-500">// Console logs cleared.</div>';
+    });
+
+    // Handle alert visual styling
+    function displayBanner(state, title, desc) {
+      statusAlert.classList.remove('hidden');
+      if (state === 'success') {
+        statusAlert.className = "rounded-xl p-4 border border-emerald-500/20 bg-emerald-950/20 text-emerald-300 flex items-start gap-3 transition-all duration-300";
+        alertIconWrapper.className = "p-1.5 rounded-lg bg-emerald-500/10 text-emerald-400";
+        alertIconWrapper.innerHTML = `
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        `;
+      } else {
+        statusAlert.className = "rounded-xl p-4 border border-rose-500/20 bg-rose-950/20 text-rose-300 flex items-start gap-3 transition-all duration-300";
+        alertIconWrapper.className = "p-1.5 rounded-lg bg-rose-500/10 text-rose-400";
+        alertIconWrapper.innerHTML = `
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+        `;
+      }
+      alertTitle.textContent = title;
+      alertDescription.textContent = desc;
+    }
+
+    // Pipeline submission routine
+    demoForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const payload = buildPayload();
+      const stringifiedPayload = JSON.stringify(payload);
+
+      // Disable submission UI to prevent race condition/multiple clicks
+      submitBtn.disabled = true;
+      submitBtn.classList.add('opacity-70', 'cursor-not-allowed');
+      buttonIcon.classList.add('animate-spin');
+      buttonIcon.innerHTML = `
+        <svg class="animate-spin h-5 w-5 text-slate-950" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+      `;
+      buttonText.textContent = "Writing Row...";
+
+      logToTerminal(`Initiating network request POST to gateway...`, 'request');
+      logToTerminal(`Target Endpoint URL: ${APPS_SCRIPT_URL}`);
+      logToTerminal(`Outgoing Payload: ${stringifiedPayload}`);
+
+      try {
+        const response = await fetch(APPS_SCRIPT_URL, {
+          method: 'POST',
+          mode: 'cors', 
+          headers: {
+            // Using text/plain eliminates preflight OPTIONS request
+            'Content-Type': 'text/plain' 
+          },
+          body: stringifiedPayload
+        });
+
+        logToTerminal(`Response received with HTTP status: ${response.status} (${response.statusText})`);
+
+        if (!response.ok) {
+          throw new Error(`Server returned HTTP Error Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        logToTerminal(`Resolved response body: ${JSON.stringify(data)}`, 'success');
+
+        if (data.status === 'success' || data.result === 'success') {
+          displayBanner('success', 'Data Saved Successfully!', 'Your payload was successfully parsed and appended as a new row in Google Sheets.');
+          logToTerminal(`Google Sheets update verified successfully.`, 'success');
+        } else {
+          displayBanner('error', 'Execution Alert', data.message || 'Row appended with warnings (check response log).');
+        }
+
+      } catch (err) {
+        logToTerminal(`Network / System Error encountered: ${err.message}`, 'error');
+        logToTerminal(`Troubleshooting Tip: If this is a new deployment, ensure "Who has access" is configured to "Anyone" and you accepted authorization scopes!`, 'error');
+        
+        displayBanner('error', 'Transmission Failed', `Error details: ${err.message}. Check your developer execution console below for specific CORS context.`);
+      } finally {
+        // Re-enable UI
+        submitBtn.disabled = false;
+        submitBtn.classList.remove('opacity-70', 'cursor-not-allowed');
+        buttonIcon.classList.remove('animate-spin');
+        buttonIcon.innerHTML = `
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+          </svg>
+        `;
+        buttonText.textContent = "Send to Google Sheet";
+      }
+    });
+  </script>
+</body>
+</html>
