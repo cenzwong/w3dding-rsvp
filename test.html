@@ -1,157 +1,210 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full bg-slate-950 text-slate-100">
+<html lang="en" class="h-full bg-stone-950 text-stone-100">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Static Site to Google Sheets Demo</title>
+  <title>Wedding RSVP Portal</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    /* Custom scrollbar styling for the dark-mode console look */
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Montserrat:wght@200;300;400;500&display=swap');
+    
+    .font-serif-lux {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+    }
+    .font-sans-lux {
+      font-family: 'Montserrat', sans-serif;
+      letter-spacing: 0.05em;
+    }
+
+    /* Custom scrollbars for debug console */
     ::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
+      width: 4px;
+      height: 4px;
     }
     ::-webkit-scrollbar-track {
-      background: #0f172a;
+      background: #0c0a09;
     }
     ::-webkit-scrollbar-thumb {
-      background: #334155;
-      border-radius: 3px;
+      background: #44403c;
+      border-radius: 2px;
     }
     ::-webkit-scrollbar-thumb:hover {
-      background: #475569;
+      background: #78716c;
     }
   </style>
 </head>
-<body class="h-full flex flex-col font-sans selection:bg-emerald-500 selection:text-slate-950">
+<body class="h-full flex flex-col font-sans-lux selection:bg-amber-100 selection:text-stone-900">
 
-  <!-- Header Banner -->
-  <header class="border-b border-slate-800 bg-slate-900/50 backdrop-blur-md sticky top-0 z-10 px-6 py-4">
+  <!-- Elegant Decorative Top Border -->
+  <div class="h-1.5 w-full bg-gradient-to-r from-amber-200 via-amber-400 to-amber-200"></div>
+
+  <!-- Header Section -->
+  <header class="border-b border-stone-900 bg-stone-950/80 backdrop-blur-md sticky top-0 z-20 px-6 py-4">
     <div class="max-w-6xl mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-      <div>
-        <div class="flex items-center gap-2">
-          <span class="flex h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
-          <h1 class="text-xl font-bold tracking-tight text-white">Google Sheets Gateway</h1>
-        </div>
-        <p class="text-xs text-slate-400 mt-1">Direct static site integration sandbox</p>
+      <div class="text-center md:text-left">
+        <h1 class="text-2xl font-serif-lux font-light tracking-widest text-amber-100 italic">Evelyn & Julian</h1>
+        <p class="text-[10px] text-stone-400 uppercase tracking-widest mt-0.5">October 17, 2026 • RSVP Gateway</p>
       </div>
-      <div class="flex items-center gap-3 bg-slate-950 border border-slate-800 rounded-lg px-3 py-1.5 text-xs max-w-full overflow-hidden">
-        <span class="text-slate-500 font-mono select-none">ENDPOINT:</span>
-        <span id="endpointDisplay" class="font-mono text-emerald-400 truncate max-w-[250px] md:max-w-[400px]">Loading...</span>
+      <!-- Endpoint Status -->
+      <div class="flex items-center justify-center gap-2 bg-stone-900/60 border border-stone-800 rounded-full px-4 py-1.5 text-[11px] max-w-full overflow-hidden">
+        <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+        <span class="text-stone-500 uppercase tracking-wider">Target API:</span>
+        <span id="endpointDisplay" class="font-mono text-amber-200/90 truncate max-w-[200px] md:max-w-[320px]">Loading...</span>
       </div>
     </div>
   </header>
 
   <main class="flex-1 max-w-6xl w-full mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-12 gap-8 overflow-y-auto">
     
-    <!-- Left Panel: Interactive Form & Explanations -->
+    <!-- Left Column: The Wedding RSVP Form (Interactive & Animated) -->
     <section class="lg:col-span-5 flex flex-col gap-6">
-      <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-6 shadow-xl backdrop-blur-sm">
-        <h2 class="text-lg font-semibold text-white mb-4">Trigger Form</h2>
-        <p class="text-sm text-slate-400 mb-6 leading-relaxed">
-          Fill out the fields below. Pressing the button compiles this data into a JSON payload and transmits it directly to your Apps Script Web App.
-        </p>
+      <div class="bg-stone-900/40 border border-stone-900 rounded-2xl p-6 md:p-8 shadow-2xl relative overflow-hidden backdrop-blur-md">
+        <!-- Soft Ambient Light Effect -->
+        <div class="absolute -top-24 -left-24 w-48 h-48 bg-amber-400/5 rounded-full blur-3xl pointer-events-none"></div>
+        
+        <h2 class="text-2xl font-serif-lux font-medium text-amber-100 mb-2 tracking-wide text-center">Kindly Respond</h2>
+        <p class="text-[11px] text-stone-400 text-center uppercase tracking-widest mb-8">Please respond by September 1st, 2026</p>
 
-        <form id="sheetDemoForm" class="space-y-4">
+        <form id="rsvpForm" class="space-y-5">
+          <!-- Guest Name -->
           <div>
-            <label for="fullName" class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">Full Name</label>
+            <label for="fullName" class="block text-[10px] font-medium uppercase tracking-widest text-stone-400 mb-1.5">Full Name</label>
             <input 
               type="text" 
               id="fullName" 
               required 
               value="Jane Doe"
-              class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500 transition-colors"
-              placeholder="e.g. Jane Doe"
+              class="w-full bg-stone-950/60 border border-stone-800/80 rounded-lg px-4 py-2.5 text-xs text-stone-100 focus:outline-none focus:border-amber-400/50 focus:ring-1 focus:ring-amber-400/20 transition-all font-sans-lux"
+              placeholder="e.g. Guest Name"
             >
           </div>
 
+          <!-- Email -->
           <div>
-            <label for="userEmail" class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">Email Address</label>
+            <label for="userEmail" class="block text-[10px] font-medium uppercase tracking-widest text-stone-400 mb-1.5">Email Address</label>
             <input 
               type="email" 
               id="userEmail" 
               required 
               value="jane.doe@example.com"
-              class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500 transition-colors"
+              class="w-full bg-stone-950/60 border border-stone-800/80 rounded-lg px-4 py-2.5 text-xs text-stone-100 focus:outline-none focus:border-amber-400/50 focus:ring-1 focus:ring-amber-400/20 transition-all font-sans-lux"
               placeholder="jane@example.com"
             >
           </div>
 
+          <!-- Attendance Status Toggle -->
           <div>
-            <label for="userMessage" class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">Context Message</label>
-            <textarea 
-              id="userMessage" 
-              rows="3" 
-              class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500 transition-colors resize-none"
-              placeholder="Write something to verify in the sheet..."
-            >Testing direct write pipeline to Google Sheets.</textarea>
-          </div>
+            <span class="block text-[10px] font-medium uppercase tracking-widest text-stone-400 mb-2">Will you attend?</span>
+            <div class="grid grid-cols-2 gap-3">
+              <label class="relative flex items-center justify-center p-3 rounded-lg border border-stone-800 bg-stone-950/40 cursor-pointer hover:border-stone-700 transition-all">
+                <input type="radio" name="attending" value="Attending" checked class="sr-only peer">
+                <span class="text-xs uppercase tracking-wider text-stone-400 peer-checked:text-amber-200 transition-colors">Accepts</span>
+                <div class="absolute inset-0 border border-amber-400/40 rounded-lg opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none"></div>
+              </label>
 
-          <!-- Configuration Toggle -->
-          <div class="pt-2 border-t border-slate-800/60 mt-4">
-            <div class="flex items-center justify-between text-xs">
-              <span class="text-slate-400 font-semibold uppercase tracking-wider">CORS Optimization Mode</span>
-              <span id="corsBadge" class="bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2 py-0.5 rounded font-mono">text/plain</span>
+              <label class="relative flex items-center justify-center p-3 rounded-lg border border-stone-800 bg-stone-950/40 cursor-pointer hover:border-stone-700 transition-all">
+                <input type="radio" name="attending" value="Declining" class="sr-only peer">
+                <span class="text-xs uppercase tracking-wider text-stone-400 peer-checked:text-stone-400 transition-colors">Declines</span>
+                <div class="absolute inset-0 border border-stone-600 rounded-lg opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none"></div>
+              </label>
             </div>
-            <p class="text-[11px] text-slate-500 mt-1 leading-relaxed">
-              Using <code class="text-slate-300">text/plain</code> bypasses browser pre-flight checks to prevent script failure.
-            </p>
           </div>
 
-          <!-- Action Button -->
+          <!-- Conditional Fields Container (Smooth height toggle) -->
+          <div id="conditionalFields" class="space-y-5 transition-all duration-300 max-h-[500px] opacity-100 overflow-hidden">
+            <!-- Guest Count -->
+            <div>
+              <label for="guestsCount" class="block text-[10px] font-medium uppercase tracking-widest text-stone-400 mb-1.5">Number of Guests</label>
+              <select 
+                id="guestsCount" 
+                class="w-full bg-stone-950/60 border border-stone-800/80 rounded-lg px-4 py-2.5 text-xs text-stone-100 focus:outline-none focus:border-amber-400/50 transition-all font-sans-lux"
+              >
+                <option value="1">1 Guest</option>
+                <option value="2">2 Guests</option>
+                <option value="3">3 Guests</option>
+                <option value="4">4 Guests</option>
+              </select>
+            </div>
+
+            <!-- Dietary Requirements -->
+            <div>
+              <label for="dietary" class="block text-[10px] font-medium uppercase tracking-widest text-stone-400 mb-1.5">Dietary Restrictions</label>
+              <input 
+                type="text" 
+                id="dietary" 
+                value="None"
+                class="w-full bg-stone-950/60 border border-stone-800/80 rounded-lg px-4 py-2.5 text-xs text-stone-100 focus:outline-none focus:border-amber-400/50 transition-all font-sans-lux"
+                placeholder="Vegan, Gluten-free, none, etc..."
+              >
+            </div>
+          </div>
+
+          <!-- Song Request (Optional engagement feature) -->
+          <div>
+            <label for="songRequest" class="block text-[10px] font-medium uppercase tracking-widest text-stone-400 mb-1.5">Song Request for the Dance Floor</label>
+            <input 
+              type="text" 
+              id="songRequest" 
+              value="Dancing Queen - ABBA"
+              class="w-full bg-stone-950/60 border border-stone-800/80 rounded-lg px-4 py-2.5 text-xs text-stone-100 focus:outline-none focus:border-amber-400/50 transition-all font-sans-lux"
+              placeholder="Artist - Title"
+            >
+          </div>
+
+          <!-- Submit Button -->
           <button 
             type="submit" 
             id="submitBtn"
-            class="w-full mt-4 bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 text-slate-950 font-bold py-3 px-4 rounded-lg transition-all transform hover:-translate-y-0.5 active:translate-y-0 shadow-lg shadow-emerald-500/10 flex items-center justify-center gap-2"
+            class="w-full mt-6 bg-amber-200 hover:bg-amber-100 active:bg-amber-300 text-stone-950 font-medium py-3.5 px-4 rounded-lg transition-all shadow-lg shadow-amber-950/30 flex items-center justify-center gap-2 text-xs uppercase tracking-widest"
           >
             <svg id="buttonIcon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 19v-8.93a2 2 0 01.89-1.664l8-5.333a2 2 0 012.22 0l8 5.333A2 2 0 0121 10.07V19M3 19a2 2 0 002 2h14a2 2 0 002-2M3 19l6.75-4.5M21 19l-6.75-4.5M3 10l6.75 4.5M21 10l-6.75 4.5m0 0l-2.25-1.5a2 2 0 00-2.22 0l-2.25 1.5"></path>
             </svg>
-            <span id="buttonText">Send to Google Sheet</span>
+            <span id="buttonText">Send Response</span>
           </button>
         </form>
       </div>
 
-      <!-- Network State Indicators -->
+      <!-- Live User Notifications -->
       <div id="statusAlert" class="hidden rounded-xl p-4 border flex items-start gap-3 transition-all duration-300">
         <div id="alertIconWrapper" class="p-1.5 rounded-lg"></div>
         <div class="flex-1">
-          <h4 id="alertTitle" class="text-sm font-bold"></h4>
-          <p id="alertDescription" class="text-xs mt-0.5 leading-relaxed"></p>
+          <h4 id="alertTitle" class="text-xs font-bold uppercase tracking-wider"></h4>
+          <p id="alertDescription" class="text-[11px] mt-0.5 leading-relaxed"></p>
         </div>
       </div>
     </section>
 
-    <!-- Right Panel: Under the Hood Inspector -->
+    <!-- Right Column: Verification & Developer Inspector Panels -->
     <section class="lg:col-span-7 flex flex-col gap-6">
       
-      <!-- Live Payload Preview -->
-      <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-6 shadow-xl flex flex-col h-48">
+      <!-- Live JSON Parser Box -->
+      <div class="bg-stone-900/40 border border-stone-900 rounded-2xl p-6 shadow-xl flex flex-col h-48 backdrop-blur-md">
         <div class="flex items-center justify-between mb-3">
-          <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400">Payload Preview (JSON Object)</h3>
-          <span class="text-[11px] text-slate-500 font-mono">Read-Only</span>
+          <h3 class="text-[10px] font-semibold uppercase tracking-widest text-stone-400">Post Body (Outgoing JSON)</h3>
+          <span class="text-[9px] bg-stone-800 text-stone-400 px-2 py-0.5 rounded uppercase tracking-wider">Internal Model</span>
         </div>
-        <div class="flex-1 bg-slate-950 border border-slate-800/80 rounded-lg p-3 overflow-auto font-mono text-xs text-emerald-400 select-all">
+        <div class="flex-1 bg-stone-950 border border-stone-900 rounded-lg p-3 overflow-auto font-mono text-[11px] text-amber-200 select-all">
           <pre id="payloadPreview">{}</pre>
         </div>
       </div>
 
-      <!-- Integrated Developer Terminal -->
-      <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-6 shadow-xl flex flex-col flex-1 min-h-[300px]">
-        <div class="flex items-center justify-between mb-3 border-b border-slate-800/60 pb-3">
+      <!-- Live Terminal Pipeline Monitor -->
+      <div class="bg-stone-900/40 border border-stone-900 rounded-2xl p-6 shadow-xl flex flex-col flex-1 min-h-[300px] backdrop-blur-md">
+        <div class="flex items-center justify-between mb-3 border-b border-stone-900 pb-3">
           <div class="flex items-center gap-2">
-            <span class="w-2 h-2 rounded-full bg-red-500"></span>
-            <span class="w-2 h-2 rounded-full bg-yellow-500"></span>
-            <span class="w-2 h-2 rounded-full bg-green-500"></span>
-            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-300 ml-2 font-mono">Execution Log Console</h3>
+            <span class="w-2 h-2 rounded-full bg-stone-700"></span>
+            <span class="w-2 h-2 rounded-full bg-stone-600"></span>
+            <span class="w-2 h-2 rounded-full bg-stone-500"></span>
+            <h3 class="text-[10px] font-semibold uppercase tracking-widest text-stone-300 ml-2">Developer Pipeline Log</h3>
           </div>
-          <button id="clearConsoleBtn" class="text-[10px] text-slate-500 hover:text-slate-300 uppercase font-bold tracking-wider hover:underline transition-all">Clear Logs</button>
+          <button id="clearConsoleBtn" class="text-[9px] text-stone-500 hover:text-stone-300 uppercase font-semibold tracking-wider hover:underline transition-all">Clear Logs</button>
         </div>
         
-        <!-- Terminal Logs -->
-        <div id="terminalBody" class="flex-1 bg-slate-950 border border-slate-800 rounded-lg p-4 font-mono text-xs text-slate-300 overflow-y-auto space-y-3 selection:bg-slate-800">
-          <div class="text-slate-500">// Terminal initialized. Ready to execute pipeline.</div>
+        <!-- Interactive Terminal Console logs -->
+        <div id="terminalBody" class="flex-1 bg-stone-950 border border-stone-900 rounded-lg p-4 font-mono text-[11px] text-stone-300 overflow-y-auto space-y-3">
+          <div class="text-stone-500">// System ready. Ensure to change SPREADSHEET_ID inside RSVP Insert!</div>
         </div>
       </div>
 
@@ -159,17 +212,19 @@
 
   </main>
 
-  <!-- Script Implementation -->
   <script>
-    // Configured Apps Script Web App URL provided by User
+    // Configured standalone deployment URL
     const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzsGvNfoq-29SU9om-msrzNHB6pdcarb_IxeBbHh62-CXaYZbBp8HNzx2QUeIjRdhrY/exec";
     
-    // DOM Cache
+    // DOM selectors
     const endpointDisplay = document.getElementById('endpointDisplay');
-    const demoForm = document.getElementById('sheetDemoForm');
+    const demoForm = document.getElementById('rsvpForm');
     const fullNameInput = document.getElementById('fullName');
     const userEmailInput = document.getElementById('userEmail');
-    const userMessageInput = document.getElementById('userMessage');
+    const conditionalFields = document.getElementById('conditionalFields');
+    const guestsCountInput = document.getElementById('guestsCount');
+    const dietaryInput = document.getElementById('dietary');
+    const songRequestInput = document.getElementById('songRequest');
     const payloadPreview = document.getElementById('payloadPreview');
     const submitBtn = document.getElementById('submitBtn');
     const buttonIcon = document.getElementById('buttonIcon');
@@ -181,152 +236,161 @@
     const alertTitle = document.getElementById('alertTitle');
     const alertDescription = document.getElementById('alertDescription');
 
-    // Display URL instantly on load
+    // Populate the endpoint configuration on the screen
     endpointDisplay.textContent = APPS_SCRIPT_URL;
 
-    // Helper to log formatting to interactive console
+    // Handle smooth conditional showing of form sections based on RSVP choice
+    const attendingRadios = document.getElementsByName('attending');
+    attendingRadios.forEach(radio => {
+      radio.addEventListener('change', (e) => {
+        if (e.target.value === 'Declining') {
+          conditionalFields.style.maxHeight = '0px';
+          conditionalFields.style.opacity = '0';
+          logToTerminal('User selected "Declining". Guest details hidden.', 'info');
+        } else {
+          conditionalFields.style.maxHeight = '500px';
+          conditionalFields.style.opacity = '1';
+          logToTerminal('User selected "Attending". Guest details active.', 'info');
+        }
+        updatePayloadPreview();
+      });
+    });
+
+    // Output formatting to the visual terminal inside page
     function logToTerminal(message, type = 'info') {
       const logEntry = document.createElement('div');
       const timestamp = new Date().toLocaleTimeString();
-      let colorClass = 'text-slate-400';
-      let symbol = 'ℹ';
+      let colorClass = 'text-stone-400';
+      let symbol = '•';
 
       if (type === 'success') {
-        colorClass = 'text-emerald-400';
-        symbol = '✔';
+        colorClass = 'text-amber-200';
+        symbol = '✓';
       } else if (type === 'error') {
         colorClass = 'text-rose-400';
-        symbol = '✘';
+        symbol = '✗';
       } else if (type === 'request') {
-        colorClass = 'text-blue-400';
-        symbol = '🚀';
+        colorClass = 'text-blue-300';
+        symbol = '→';
       }
 
-      logEntry.className = `leading-relaxed border-l-2 pl-3 ${type === 'error' ? 'border-rose-500/50 bg-rose-950/10' : type === 'success' ? 'border-emerald-500/50 bg-emerald-950/10' : 'border-slate-800'}`;
+      logEntry.className = `leading-relaxed border-l border-stone-800 pl-3 ${type === 'error' ? 'bg-rose-950/5' : type === 'success' ? 'bg-amber-950/5' : ''}`;
       logEntry.innerHTML = `
-        <span class="text-slate-600 font-mono select-none mr-1.5">[${timestamp}]</span>
-        <span class="${colorClass} font-mono font-bold mr-1">${symbol}</span>
+        <span class="text-stone-600 select-none mr-2">[${timestamp}]</span>
+        <span class="${colorClass} font-bold mr-1.5">${symbol}</span>
         <span class="${colorClass}">${message}</span>
       `;
       terminalBody.appendChild(logEntry);
       terminalBody.scrollTop = terminalBody.scrollHeight;
     }
 
-    // Helper to live construct payload object from inputs
+    // Build JSON data packet
     function buildPayload() {
+      const attendingVal = document.querySelector('input[name="attending"]:checked').value;
+      const isAttending = attendingVal === 'Attending';
+      
       return {
-        timestamp: new Date().toISOString(),
         fullName: fullNameInput.value.trim(),
         userEmail: userEmailInput.value.trim(),
-        message: userMessageInput.value.trim()
+        attending: attendingVal,
+        guestsCount: isAttending ? parseInt(guestsCountInput.value, 10) : 0,
+        dietary: isAttending ? dietaryInput.value.trim() : "N/A",
+        songRequest: songRequestInput.value.trim() || "None"
       };
     }
 
-    // Update the live JSON structure panel
+    // Update the live visual JSON container
     function updatePayloadPreview() {
       const payload = buildPayload();
       payloadPreview.textContent = JSON.stringify(payload, null, 2);
     }
 
-    // Event listeners to feed the preview loop
+    // Connect text elements to the update pre-processing loop
     fullNameInput.addEventListener('input', updatePayloadPreview);
     userEmailInput.addEventListener('input', updatePayloadPreview);
-    userMessageInput.addEventListener('input', updatePayloadPreview);
+    guestsCountInput.addEventListener('change', updatePayloadPreview);
+    dietaryInput.addEventListener('input', updatePayloadPreview);
+    songRequestInput.addEventListener('input', updatePayloadPreview);
 
-    // Initial Trigger on execution setup
+    // Run initial compile
     updatePayloadPreview();
 
-    // Clear Console Utility
+    // Reset console box
     clearConsoleBtn.addEventListener('click', () => {
-      terminalBody.innerHTML = '<div class="text-slate-500">// Console logs cleared.</div>';
+      terminalBody.innerHTML = '<div class="text-stone-500">// Logs cleared. Ready.</div>';
     });
 
-    // Handle alert visual styling
+    // Alert Banner layout control
     function displayBanner(state, title, desc) {
       statusAlert.classList.remove('hidden');
       if (state === 'success') {
-        statusAlert.className = "rounded-xl p-4 border border-emerald-500/20 bg-emerald-950/20 text-emerald-300 flex items-start gap-3 transition-all duration-300";
-        alertIconWrapper.className = "p-1.5 rounded-lg bg-emerald-500/10 text-emerald-400";
+        statusAlert.className = "rounded-xl p-4 border border-amber-500/10 bg-amber-950/10 text-amber-200 flex items-start gap-3 transition-all duration-300";
+        alertIconWrapper.className = "p-1.5 rounded-lg bg-amber-500/10 text-amber-300";
         alertIconWrapper.innerHTML = `
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
         `;
       } else {
-        statusAlert.className = "rounded-xl p-4 border border-rose-500/20 bg-rose-950/20 text-rose-300 flex items-start gap-3 transition-all duration-300";
-        alertIconWrapper.className = "p-1.5 rounded-lg bg-rose-500/10 text-rose-400";
+        statusAlert.className = "rounded-xl p-4 border border-rose-500/10 bg-rose-950/10 text-rose-300 flex items-start gap-3 transition-all duration-300";
+        alertIconWrapper.className = "p-1.5 rounded-lg bg-rose-500/10 text-rose-300";
         alertIconWrapper.innerHTML = `
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
         `;
       }
       alertTitle.textContent = title;
       alertDescription.textContent = desc;
     }
 
-    // Pipeline submission routine
+    // Submit payload to the API
     demoForm.addEventListener('submit', async (e) => {
       e.preventDefault();
 
       const payload = buildPayload();
       const stringifiedPayload = JSON.stringify(payload);
 
-      // Disable submission UI to prevent race condition/multiple clicks
+      // Lock buttons to block execution during pending cycle
       submitBtn.disabled = true;
-      submitBtn.classList.add('opacity-70', 'cursor-not-allowed');
-      buttonIcon.classList.add('animate-spin');
-      buttonIcon.innerHTML = `
-        <svg class="animate-spin h-5 w-5 text-slate-950" fill="none" viewBox="0 0 24 24">
-          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-        </svg>
-      `;
-      buttonText.textContent = "Writing Row...";
+      submitBtn.classList.add('opacity-60', 'cursor-not-allowed');
+      buttonIcon.classList.add('animate-pulse');
+      buttonText.textContent = "Writing Row to RSVP DB...";
 
-      logToTerminal(`Initiating network request POST to gateway...`, 'request');
-      logToTerminal(`Target Endpoint URL: ${APPS_SCRIPT_URL}`);
-      logToTerminal(`Outgoing Payload: ${stringifiedPayload}`);
+      logToTerminal(`Transmitting post-body to Apps Script gateway...`, 'request');
+      logToTerminal(`Payload sent: ${stringifiedPayload}`);
 
       try {
         const response = await fetch(APPS_SCRIPT_URL, {
           method: 'POST',
-          mode: 'cors', 
+          mode: 'cors',
           headers: {
-            // Using text/plain eliminates preflight OPTIONS request
-            'Content-Type': 'text/plain' 
+            'Content-Type': 'text/plain' // Bypass standard browser preflight check
           },
           body: stringifiedPayload
         });
 
-        logToTerminal(`Response received with HTTP status: ${response.status} (${response.statusText})`);
+        logToTerminal(`API Response received. Status: ${response.status}`);
 
         if (!response.ok) {
-          throw new Error(`Server returned HTTP Error Status: ${response.status}`);
+          throw new Error(`Endpoint returned HTTP ${response.status}`);
         }
 
         const data = await response.json();
-        logToTerminal(`Resolved response body: ${JSON.stringify(data)}`, 'success');
+        logToTerminal(`Body decoded: ${JSON.stringify(data)}`, 'success');
 
-        if (data.status === 'success' || data.result === 'success') {
-          displayBanner('success', 'Data Saved Successfully!', 'Your payload was successfully parsed and appended as a new row in Google Sheets.');
-          logToTerminal(`Google Sheets update verified successfully.`, 'success');
+        if (data.status === 'success') {
+          displayBanner('success', 'RSVP Submitted', 'Your response has been written directly to the RSVP DB spreadsheet.');
+          logToTerminal(`Verification complete. Spreadsheet successfully appended.`, 'success');
         } else {
-          displayBanner('error', 'Execution Alert', data.message || 'Row appended with warnings (check response log).');
+          displayBanner('error', 'API Issue', data.message || 'The script ran but returned an unsuccessful status.');
         }
 
       } catch (err) {
-        logToTerminal(`Network / System Error encountered: ${err.message}`, 'error');
-        logToTerminal(`Troubleshooting Tip: If this is a new deployment, ensure "Who has access" is configured to "Anyone" and you accepted authorization scopes!`, 'error');
-        
-        displayBanner('error', 'Transmission Failed', `Error details: ${err.message}. Check your developer execution console below for specific CORS context.`);
+        logToTerminal(`Failure: ${err.message}`, 'error');
+        logToTerminal(`Checklist: Did you replace SPREADSHEET_ID in "RSVP Insert"?`, 'error');
+        displayBanner('error', 'Transmission Failed', `Error details: ${err.message}. Open the developer console for additional stack details.`);
       } finally {
-        // Re-enable UI
         submitBtn.disabled = false;
-        submitBtn.classList.remove('opacity-70', 'cursor-not-allowed');
-        buttonIcon.classList.remove('animate-spin');
-        buttonIcon.innerHTML = `
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
-          </svg>
-        `;
-        buttonText.textContent = "Send to Google Sheet";
+        submitBtn.classList.remove('opacity-60', 'cursor-not-allowed');
+        buttonIcon.classList.remove('animate-pulse');
+        buttonText.textContent = "Send Response";
       }
     });
   </script>
