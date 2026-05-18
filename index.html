@@ -45,6 +45,18 @@
         .bg-shimmer {
             background: linear-gradient(135deg, #fbf9f4 0%, #f3ede2 100%);
         }
+
+        /* Hardware-accelerated CSS ringing animation for WhatsApp icons */
+        @keyframes ring-pause {
+            0%, 20%, 100% { transform: rotate(0deg); }
+            5%, 15% { transform: rotate(-15deg); }
+            10% { transform: rotate(15deg); }
+        }
+        
+        .animate-ring {
+            animation: ring-pause 2.5s infinite ease-in-out;
+            transform-origin: center;
+        }
     </style>
 </head>
 <body class="bg-shimmer font-sans text-stone-850 min-h-screen flex flex-col justify-between p-4 sm:p-6">
@@ -188,8 +200,8 @@
                    rel="noopener noreferrer" 
                    class="group flex flex-col items-center justify-center p-3.5 bg-[#25D366] hover:bg-[#20ba59] active:scale-[0.98] text-white rounded-2xl shadow-md transition-all duration-150">
                     <div class="flex items-center gap-2 mb-1">
-                        <!-- WhatsApp Image Icon -->
-                        <img src="https://img.icons8.com/?size=100&id=7OeRNqg6S7Vf&format=png&color=000000" alt="WhatsApp" class="w-5 h-5 object-contain">
+                        <!-- WhatsApp Image Icon (Animated) -->
+                        <img src="https://img.icons8.com/?size=100&id=7OeRNqg6S7Vf&format=png&color=000000" alt="WhatsApp" class="w-5 h-5 object-contain animate-ring">
                         <span class="text-base font-bold tracking-wide">新娘 Issac</span>
                     </div>
                     <span class="text-[10px] sm:text-xs opacity-90 text-center font-medium block">Bride Issac • WhatsApp</span>
@@ -202,8 +214,8 @@
                    rel="noopener noreferrer" 
                    class="group flex flex-col items-center justify-center p-3.5 bg-[#25D366] hover:bg-[#20ba59] active:scale-[0.98] text-white rounded-2xl shadow-md transition-all duration-150">
                     <div class="flex items-center gap-2 mb-1">
-                        <!-- WhatsApp Image Icon -->
-                        <img src="https://img.icons8.com/?size=100&id=7OeRNqg6S7Vf&format=png&color=000000" alt="WhatsApp" class="w-5 h-5 object-contain">
+                        <!-- WhatsApp Image Icon (Animated) -->
+                        <img src="https://img.icons8.com/?size=100&id=7OeRNqg6S7Vf&format=png&color=000000" alt="WhatsApp" class="w-5 h-5 object-contain animate-ring">
                         <span class="text-base font-bold tracking-wide">新郎 Cenz</span>
                     </div>
                     <span class="text-[10px] sm:text-xs opacity-90 text-center font-medium block">Groom Cenz • WhatsApp</span>
