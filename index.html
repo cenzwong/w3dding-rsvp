@@ -12,8 +12,15 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Iansui&family=Sniglet:wght@400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Schoolbell&display=swap" rel="stylesheet">
     <style>
         /* Explicit font classes based on provided specs */
+        .schoolbell-regular {
+            font-family: "Schoolbell", cursive;
+            font-weight: 400;
+            font-style: normal;
+        }
+
         .iansui-regular {
             font-family: "Iansui", cursive;
             font-weight: 400;
@@ -71,96 +78,96 @@
             </div>
             
             <!-- Bride & Groom Names -->
-            <div class="space-y-1">
-                <h1 class="font-serif text-3xl sm:text-4xl text-stone-900 tracking-tight italic">Issac & Cenz</h1>
-                <p class="text-[10px] uppercase tracking-[0.25em] font-semibold text-amber-700">我們結婚了！ • Are Getting Married</p>
+            <div class="space-y-1 mb-2">
+                <h1 class="schoolbell-regular text-3xl sm:text-4xl text-stone-700 tracking-tight my-2">Issac & Cenz</h1>
+                <p class="text-xs sm:text-sm uppercase tracking-[0.25em] font-semibold text-amber-700">我們結婚了！ • Are Getting Married</p>
             </div>
 
             <!-- Event Details & Location (Bilingual) -->
-            <div class="py-3 px-4 bg-stone-50/90 rounded-2xl border border-stone-100 w-full text-xs text-stone-600 space-y-2.5">
+            <div class="py-4 px-4 bg-stone-50/90 rounded-2xl border border-stone-100 w-full text-sm text-stone-600 space-y-3">
                 <!-- Date -->
-                <div class="space-y-0.5">
-                    <p class="font-semibold text-stone-850">2026年6月29日 (星期一)</p>
-                    <p class="text-[11px] font-medium text-stone-600">Monday, June 29, 2026</p>
+                <div class="space-y-1">
+                    <p class="font-semibold text-stone-850 text-base">2026年6月29日 (星期一)</p>
+                    <p class="text-xs font-medium text-stone-600">Monday, June 29, 2026</p>
                 </div>
                 
-                <div class="w-8 h-[1px] bg-stone-200 mx-auto"></div>
+                <div class="w-12 h-[1px] bg-stone-200 mx-auto"></div>
                 
                 <!-- Location -->
-                <div class="space-y-0.5">
-                    <p class="font-semibold text-stone-850 text-[11px]">War Memorial Building, Harrow School</p>
-                    <p class="text-[10px] text-stone-500">Harrow HA1 3HL</p>
+                <div class="space-y-1">
+                    <p class="font-semibold text-stone-850 text-sm sm:text-base">War Memorial Building, Harrow School</p>
+                    <p class="text-xs text-stone-500">Harrow HA1 3HL</p>
                 </div>
 
                 <!-- Action Buttons: Map & Calendar -->
-                <div class="grid grid-cols-2 gap-2 pt-1 max-w-[280px] mx-auto">
+                <div class="grid grid-cols-2 gap-3 pt-2 max-w-[300px] mx-auto">
                     <a href="https://maps.app.goo.gl/jc8KRyaF3cfCTYHb7" target="_blank" rel="noopener noreferrer" 
-                       class="flex items-center justify-center gap-1.5 py-2 px-1 bg-white border border-stone-200 rounded-xl text-stone-700 hover:bg-stone-50 transition-all shadow-sm active:scale-95">
-                        <span class="text-sm">📍</span>
+                       class="flex items-center justify-center gap-2 py-2.5 px-2 bg-white border border-stone-200 rounded-xl text-stone-700 hover:bg-stone-50 transition-all shadow-sm active:scale-95">
+                        <span class="text-base">📍</span>
                         <div class="text-left">
-                            <span class="block text-[10px] font-bold leading-none mb-0.5">查看地圖</span>
-                            <span class="block text-[8px] opacity-80 leading-none">View Map</span>
+                            <span class="block text-sm font-bold leading-none mb-1">查看地圖</span>
+                            <span class="block text-[10px] sm:text-xs opacity-80 leading-none">View Map</span>
                         </div>
                     </a>
                     
                     <button onclick="downloadICS()" type="button" 
-                            class="flex items-center justify-center gap-1.5 py-2 px-1 bg-white border border-stone-200 rounded-xl text-stone-700 hover:bg-stone-50 transition-all shadow-sm active:scale-95">
-                        <span class="text-sm">📅</span>
+                            class="flex items-center justify-center gap-2 py-2.5 px-2 bg-white border border-stone-200 rounded-xl text-stone-700 hover:bg-stone-50 transition-all shadow-sm active:scale-95">
+                        <span class="text-base">📅</span>
                         <div class="text-left">
-                            <span class="block text-[10px] font-bold leading-none mb-0.5">加入日曆</span>
-                            <span class="block text-[8px] opacity-80 leading-none">Add Event</span>
+                            <span class="block text-sm font-bold leading-none mb-1">加入日曆</span>
+                            <span class="block text-[10px] sm:text-xs opacity-80 leading-none">Add Event</span>
                         </div>
                     </button>
                 </div>
             </div>
             
-            <p class="text-xs text-stone-600 max-w-xs mx-auto leading-relaxed pt-2">
+            <p class="text-sm text-stone-600 max-w-[320px] mx-auto leading-relaxed pt-3">
                 衷心期待與您分享這份喜悅。<br class="hidden sm:inline">請於下方選擇出席狀況，並透過 WhatsApp 聯絡我們！
-                <span class="block text-[11px] italic text-stone-400 mt-1">
+                <span class="block text-xs italic text-stone-400 mt-1.5">
                     "We can't wait to share our journey with you. Please let us know if you can attend by messaging us on WhatsApp!"
                 </span>
             </p>
         </header>
 
         <!-- Interactive Guest Helper Form (Bilingual labels) -->
-        <section class="w-full bg-stone-50/60 border border-amber-100/40 rounded-2xl p-4 mb-5 text-left z-10 space-y-3.5">
-            <h3 class="text-[10px] font-bold text-stone-600 uppercase tracking-widest text-center">
+        <section class="w-full bg-stone-50/60 border border-amber-100/40 rounded-2xl p-5 mb-5 text-left z-10 space-y-4">
+            <h3 class="text-xs font-bold text-stone-600 uppercase tracking-widest text-center">
                 回覆訊息助手 • RSVP Message Builder
             </h3>
             
             <!-- 1. Name Input -->
             <div>
-                <label for="guest-name" class="block text-[10px] font-bold text-stone-500 uppercase tracking-wider mb-1">
-                    您的姓名 <span class="text-[8px] font-normal text-stone-400">/ Your Full Name</span>
+                <label for="guest-name" class="block text-sm font-bold text-stone-600 uppercase tracking-wider mb-1.5">
+                    您的姓名 <span class="text-xs font-normal text-stone-500">/ Your Full Name</span>
                 </label>
-                <input type="text" id="guest-name" placeholder="例如：陳大文 / e.g. John Doe" oninput="updateWeddingMessage()" 
-                       class="w-full bg-white border border-stone-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-amber-500 focus:border-amber-500 transition-all text-stone-850">
+                <input type="text" id="guest-name" placeholder="例如：陳大文 / e.g. John Doe" oninput="checkFormValidity(); updateWeddingMessage();" 
+                       class="w-full bg-white border border-stone-200 rounded-xl px-4 py-3 text-base focus:outline-none focus:ring-1 focus:ring-amber-500 focus:border-amber-500 transition-all text-stone-850">
             </div>
 
             <!-- 2. Guest Count Input -->
             <div id="guest-count-container">
-                <label for="guest-count" class="block text-[10px] font-bold text-stone-500 uppercase tracking-wider mb-1">
-                    出席人數 <span class="text-[8px] font-normal text-stone-400">/ Number of Guests</span>
+                <label for="guest-count" class="block text-sm font-bold text-stone-600 uppercase tracking-wider mb-1.5">
+                    出席人數 <span class="text-xs font-normal text-stone-500">/ Number of Guests</span>
                 </label>
-                <input type="number" id="guest-count" min="1" max="10" value="1" oninput="updateWeddingMessage()" 
-                       class="w-full bg-white border border-stone-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-amber-500 focus:border-amber-500 transition-all text-stone-850">
+                <input type="number" id="guest-count" min="1" max="10" placeholder="例如：2 / e.g. 2" oninput="checkFormValidity(); updateWeddingMessage();" 
+                       class="w-full bg-white border border-stone-200 rounded-xl px-4 py-3 text-base focus:outline-none focus:ring-1 focus:ring-amber-500 focus:border-amber-500 transition-all text-stone-850">
             </div>
 
             <!-- 3. Attendance Status Buttons -->
             <div>
-                <label class="block text-[10px] font-bold text-stone-500 uppercase tracking-wider mb-1">
-                    出席狀況 <span class="text-[8px] font-normal text-stone-400">/ Attendance Status</span>
+                <label class="block text-sm font-bold text-stone-600 uppercase tracking-wider mb-1.5">
+                    出席狀況 <span class="text-xs font-normal text-stone-500">/ Attendance Status</span>
                 </label>
-                <div class="grid grid-cols-2 gap-2">
-                    <button type="button" id="btn-accept" onclick="setAttendance(true)" 
-                            class="py-2.5 px-3 text-xs font-semibold rounded-xl border text-center transition-all bg-white border-stone-200 text-stone-500 hover:bg-stone-50">
-                        <span class="block">歡雅出席</span>
-                        <span class="block text-[9px] font-medium opacity-80">Joyfully Accept</span>
+                <div class="grid grid-cols-2 gap-3">
+                    <button type="button" id="btn-accept" disabled onclick="setAttendance(true)" 
+                            class="py-3 px-3 text-sm font-semibold rounded-xl border text-center transition-all bg-white border-stone-200 text-stone-500 hover:bg-stone-50 disabled:opacity-50 disabled:cursor-not-allowed">
+                        <span class="block text-base mb-0.5">欣然出席</span>
+                        <span class="block text-[10px] sm:text-xs font-medium opacity-80">Joyfully Accept</span>
                     </button>
-                    <button type="button" id="btn-decline" onclick="setAttendance(false)" 
-                            class="py-2.5 px-3 text-xs font-semibold rounded-xl border text-center transition-all bg-white border-stone-200 text-stone-500 hover:bg-stone-50">
-                        <span class="block">未能出席</span>
-                        <span class="block text-[9px] font-medium opacity-80">Regretfully Decline</span>
+                    <button type="button" id="btn-decline" disabled onclick="setAttendance(false)" 
+                            class="py-3 px-3 text-sm font-semibold rounded-xl border text-center transition-all bg-white border-stone-200 text-stone-500 hover:bg-stone-50 disabled:opacity-50 disabled:cursor-not-allowed">
+                        <span class="block text-base mb-0.5">未能出席</span>
+                        <span class="block text-[10px] sm:text-xs font-medium opacity-80">Regretfully Decline</span>
                     </button>
                 </div>
             </div>
@@ -168,7 +175,7 @@
 
         <!-- Side-by-Side Left & Right WhatsApp Hyperlink Buttons (Bilingual) -->
         <section class="w-full z-10">
-            <h3 class="text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-3">
+            <h3 class="text-xs font-bold text-stone-500 uppercase tracking-widest mb-3">
                 發送回覆訊息至 • Send RSVP Message To
             </h3>
             
@@ -179,13 +186,13 @@
                    href="https://wa.me/85265472714" 
                    target="_blank" 
                    rel="noopener noreferrer" 
-                   class="group flex flex-col items-center justify-center p-3 bg-[#25D366] hover:bg-[#20ba59] active:scale-[0.98] text-white rounded-2xl shadow-md transition-all duration-150">
-                    <div class="flex items-center gap-1.5 mb-0.5">
+                   class="group flex flex-col items-center justify-center p-3.5 bg-[#25D366] hover:bg-[#20ba59] active:scale-[0.98] text-white rounded-2xl shadow-md transition-all duration-150">
+                    <div class="flex items-center gap-2 mb-1">
                         <!-- WhatsApp Image Icon -->
-                        <img src="https://img.icons8.com/?size=100&id=7OeRNqg6S7Vf&format=png&color=000000" alt="WhatsApp" class="w-4 h-4 object-contain">
-                        <span class="text-[13px] font-bold tracking-wide">新娘 Issac</span>
+                        <img src="https://img.icons8.com/?size=100&id=7OeRNqg6S7Vf&format=png&color=000000" alt="WhatsApp" class="w-5 h-5 object-contain">
+                        <span class="text-base font-bold tracking-wide">新娘 Issac</span>
                     </div>
-                    <span class="text-[9px] opacity-90 text-center font-medium block">Bride Issac • WhatsApp</span>
+                    <span class="text-[10px] sm:text-xs opacity-90 text-center font-medium block">Bride Issac • WhatsApp</span>
                 </a>
 
                 <!-- Right Button: WhatsApp Groom (Cenz) -->
@@ -193,13 +200,13 @@
                    href="https://wa.me/85261585094" 
                    target="_blank" 
                    rel="noopener noreferrer" 
-                   class="group flex flex-col items-center justify-center p-3 bg-[#25D366] hover:bg-[#20ba59] active:scale-[0.98] text-white rounded-2xl shadow-md transition-all duration-150">
-                    <div class="flex items-center gap-1.5 mb-0.5">
+                   class="group flex flex-col items-center justify-center p-3.5 bg-[#25D366] hover:bg-[#20ba59] active:scale-[0.98] text-white rounded-2xl shadow-md transition-all duration-150">
+                    <div class="flex items-center gap-2 mb-1">
                         <!-- WhatsApp Image Icon -->
-                        <img src="https://img.icons8.com/?size=100&id=7OeRNqg6S7Vf&format=png&color=000000" alt="WhatsApp" class="w-4 h-4 object-contain">
-                        <span class="text-[13px] font-bold tracking-wide">新郎 Cenz</span>
+                        <img src="https://img.icons8.com/?size=100&id=7OeRNqg6S7Vf&format=png&color=000000" alt="WhatsApp" class="w-5 h-5 object-contain">
+                        <span class="text-base font-bold tracking-wide">新郎 Cenz</span>
                     </div>
-                    <span class="text-[9px] opacity-90 text-center font-medium block">Groom Cenz • WhatsApp</span>
+                    <span class="text-[10px] sm:text-xs opacity-90 text-center font-medium block">Groom Cenz • WhatsApp</span>
                 </a>
 
             </div>
@@ -208,8 +215,8 @@
     </main>
 
     <!-- Clean, Delicate Footer Details -->
-    <footer class="text-center py-4 space-y-1.5 z-10">
-        <p class="text-[9px] font-bold tracking-[0.22em] text-stone-400 uppercase">
+    <footer class="text-center py-4 space-y-2 z-10">
+        <p class="text-xs font-bold tracking-[0.22em] text-stone-400 uppercase">
             Issac & Cenz • 2026年6月29日 • June 29, 2026
         </p>
     </footer>
@@ -222,6 +229,24 @@
         // Local state - set to null initially so no button is highlighted
         let guestAttending = null;
 
+        // Validation logic to enable/disable buttons
+        function checkFormValidity() {
+            const guestName = document.getElementById('guest-name').value.trim();
+            const guestCount = document.getElementById('guest-count').value;
+            
+            const acceptBtn = document.getElementById('btn-accept');
+            const declineBtn = document.getElementById('btn-decline');
+
+            // Must have name and valid guest count (>= 1) to enable buttons
+            if (guestName !== "" && guestCount !== "" && parseInt(guestCount) > 0) {
+                acceptBtn.disabled = false;
+                declineBtn.disabled = false;
+            } else {
+                acceptBtn.disabled = true;
+                declineBtn.disabled = true;
+            }
+        }
+
         function setAttendance(isAttending) {
             const wasAttending = guestAttending;
             guestAttending = isAttending;
@@ -229,10 +254,10 @@
             const acceptBtn = document.getElementById('btn-accept');
             const declineBtn = document.getElementById('btn-decline');
 
-            // 1. Style the UI Buttons Based on Selection
+            // 1. Style the UI Buttons Based on Selection (preserves disabled classes just in case)
             if (isAttending) {
-                acceptBtn.className = "py-2.5 px-3 text-xs font-semibold rounded-xl border text-center transition-all bg-amber-50 border-amber-300 text-amber-800";
-                declineBtn.className = "py-2.5 px-3 text-xs font-semibold rounded-xl border text-center transition-all bg-white border-stone-200 text-stone-500 hover:bg-stone-50";
+                acceptBtn.className = "py-3 px-3 text-sm font-semibold rounded-xl border text-center transition-all bg-amber-50 border-amber-300 text-amber-800 disabled:opacity-50 disabled:cursor-not-allowed";
+                declineBtn.className = "py-3 px-3 text-sm font-semibold rounded-xl border text-center transition-all bg-white border-stone-200 text-stone-500 hover:bg-stone-50 disabled:opacity-50 disabled:cursor-not-allowed";
                 
                 // Fire confetti if they just accepted
                 if (wasAttending !== true) {
@@ -244,8 +269,8 @@
                     });
                 }
             } else {
-                declineBtn.className = "py-2.5 px-3 text-xs font-semibold rounded-xl border text-center transition-all bg-amber-50 border-amber-300 text-amber-800";
-                acceptBtn.className = "py-2.5 px-3 text-xs font-semibold rounded-xl border text-center transition-all bg-white border-stone-200 text-stone-500 hover:bg-stone-50";
+                declineBtn.className = "py-3 px-3 text-sm font-semibold rounded-xl border text-center transition-all bg-amber-50 border-amber-300 text-amber-800 disabled:opacity-50 disabled:cursor-not-allowed";
+                acceptBtn.className = "py-3 px-3 text-sm font-semibold rounded-xl border text-center transition-all bg-white border-stone-200 text-stone-500 hover:bg-stone-50 disabled:opacity-50 disabled:cursor-not-allowed";
             }
 
             // 2. Format WhatsApp links
@@ -344,6 +369,7 @@ END:VCALENDAR`;
 
         // Initial launch setup to verify links are properly mapped on first boot
         window.onload = function() {
+            checkFormValidity();
             updateWeddingMessage();
         };
     </script>
