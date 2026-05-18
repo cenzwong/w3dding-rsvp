@@ -122,9 +122,9 @@
             
             <div>
                 <label for="guest-name" class="block text-[10px] font-bold text-stone-500 uppercase tracking-wider mb-1">
-                    您的姓名 <span class="text-[8px] font-normal text-stone-400">/ Your Full Name(s)</span>
+                    您的姓名 <span class="text-[8px] font-normal text-stone-400">/ Your Full Name</span>
                 </label>
-                <input type="text" id="guest-name" placeholder="例如：Alexis 與家人 / e.g. Alexis & family" oninput="updateWeddingMessage()" 
+                <input type="text" id="guest-name" placeholder="例如：陳大文 / e.g. John Doe" oninput="updateWeddingMessage()" 
                        class="w-full bg-white border border-stone-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-amber-500 focus:border-amber-500 transition-all text-stone-850">
             </div>
 
@@ -144,6 +144,14 @@
                         <span class="block text-[9px] font-medium opacity-80">Regretfully Decline</span>
                     </button>
                 </div>
+            </div>
+
+            <div id="guest-count-container">
+                <label for="guest-count" class="block text-[10px] font-bold text-stone-500 uppercase tracking-wider mb-1">
+                    出席人數 <span class="text-[8px] font-normal text-stone-400">/ Number of Guests</span>
+                </label>
+                <input type="number" id="guest-count" min="1" max="10" value="1" oninput="updateWeddingMessage()" 
+                       class="w-full bg-white border border-stone-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-amber-500 focus:border-amber-500 transition-all text-stone-850">
             </div>
         </section>
 
@@ -212,15 +220,18 @@
             
             const acceptBtn = document.getElementById('btn-accept');
             const declineBtn = document.getElementById('btn-decline');
+            const guestCountContainer = document.getElementById('guest-count-container');
 
             if (isAttending) {
                 // Style accept button as active
                 acceptBtn.className = "py-2.5 px-3 text-xs font-semibold rounded-xl border text-center transition-all bg-amber-50 border-amber-300 text-amber-800";
                 declineBtn.className = "py-2.5 px-3 text-xs font-semibold rounded-xl border text-center transition-all bg-white border-stone-200 text-stone-500 hover:bg-stone-50";
+                guestCountContainer.style.display = "block";
             } else {
                 // Style decline button as active
                 declineBtn.className = "py-2.5 px-3 text-xs font-semibold rounded-xl border text-center transition-all bg-amber-50 border-amber-300 text-amber-800";
                 acceptBtn.className = "py-2.5 px-3 text-xs font-semibold rounded-xl border text-center transition-all bg-white border-stone-200 text-stone-500 hover:bg-stone-50";
+                guestCountContainer.style.display = "none";
             }
 
             updateWeddingMessage();
@@ -229,6 +240,7 @@
         // Compute and formulate the final WhatsApp URLs on keypress changes
         function updateWeddingMessage() {
             const guestName = document.getElementById('guest-name').value.trim();
+            const guestCount = document.getElementById('guest-count').value || 1;
             const brideAnchor = document.getElementById('whatsapp-bride-btn');
             const groomAnchor = document.getElementById('whatsapp-groom-btn');
 
@@ -236,14 +248,14 @@
             
             if (guestName) {
                 if (guestAttending) {
-                    message = `你好！我是 ${guestName}。我哋好高興能夠出席您哋喺2026年6月29日舉辦嘅婚禮！🎉\n\nHi! This is ${guestName}. We joyfully accept your wedding invitation for June 29, 2026, and will be attending! 🎉`;
+                    message = `你好！我是 ${guestName}。我哋一共 ${guestCount} 人好高興能夠出席您哋喺2026年6月29日舉辦嘅婚禮！🎉\n\nHi! This is ${guestName}. We joyfully accept your wedding invitation for June 29, 2026! There will be ${guestCount} of us attending. 🎉`;
                 } else {
                     message = `你好！我是 ${guestName}。好遺憾我哋未能出席您哋喺2026年6月29日舉辦嘅婚禮，但衷心祝福您哋新婚快樂、幸福美滿！❤️\n\nHi! This is ${guestName}. We regretfully decline your wedding invitation for June 29, 2026, but we wish you both the very best! ❤️`;
                 }
             } else {
                 // Fallback message if no name is entered
                 if (guestAttending) {
-                    message = `你好 Issac & Cenz！我想回覆您哋嘅婚禮邀請，我會出席啊！🎉\n\nHi Issac & Cenz! I'd love to RSVP to your wedding. I'm excited to accept your invitation! 🎉`;
+                    message = `你好 Issac & Cenz！我想回覆您哋嘅婚禮邀請，我哋一共 ${guestCount} 人會出席啊！🎉\n\nHi Issac & Cenz! I'd love to RSVP to your wedding. I'm excited to accept your invitation for ${guestCount} guest(s)! 🎉`;
                 } else {
                     message = `你好 Issac & Cenz！同您哋講聲，好遺憾我哋未能出席您哋喺6月29日舉辦嘅婚禮。祝您哋新婚快樂、幸福美滿！❤️\n\nHi Issac & Cenz! I'm reaching out to let you know that I regretfully won't be able to attend your wedding on June 29. Best wishes! ❤️`;
                 }
@@ -265,8 +277,8 @@ PRODID:-//Issac and Cenz Wedding//EN
 CALSCALE:GREGORIAN
 BEGIN:VEVENT
 SUMMARY:Issac & Cenz Wedding
-DTSTART;VALUE=DATE:20260629
-DTEND;VALUE=DATE:20260630
+DTSTART:20260629T100000Z
+DTEND:20260629T130000Z
 LOCATION:War Memorial Building\\, Harrow School\\, Harrow HA1 3HL
 DESCRIPTION:Join us to celebrate the wedding of Issac and Cenz!\\n\\nMap: https://maps.app.goo.gl/jc8KRyaF3cfCTYHb7
 STATUS:CONFIRMED
